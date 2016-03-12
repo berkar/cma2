@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "resultat_gv")
 @SequenceGenerator(name = "SQ_CMA", sequenceName = "sq_cma", allocationSize = 1)
-public class Resultat extends Item {
+public class Result extends Item {
 
 	private Integer itsFinishorder;
 	private Date itsFinishtime;

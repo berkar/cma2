@@ -132,7 +132,7 @@ ALTER TABLE "${schemaName}"."time_list" ADD CONSTRAINT "ixak_time_list" UNIQUE (
 -- View Result list
 --------------------------------------------------------------------------------------------------
 
-CREATE VIEW start_list AS
+CREATE VIEW start_list_gv AS
 		SELECT *
 		FROM "${schemaName}".registration_list
 		WHERE start_number IS NOT NULL

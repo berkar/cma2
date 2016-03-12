@@ -14,14 +14,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import se.berkar.model.Registrering;
+import se.berkar.common.helpers.EmptyHandler;
+import se.berkar.model.Registration;
 import se.berkar.qualifiers.CmaLogger;
 import se.berkar.qualifiers.CmaServiceDB;
 
 import org.jboss.logging.Logger;
 
 @Stateless
-@Path("registrering")
+@Path("registration")
 public class RegistrationServiceBean {
 
 	@Inject
@@ -52,7 +53,22 @@ public class RegistrationServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@QueryParam("gender") String theGender, @QueryParam("class") String theClass) throws Exception {
-		return Response.status(Response.Status.NO_CONTENT).build();
+		if (EmptyHandler.isNotEmpty(theGender) && EmptyHandler.isNotEmpty(theClass)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT reg FROM Start reg WHERE reg.gender=:gender AND reg.clazz=:class")
+					.setParameter("gender", theGender)
+					.setParameter("class", theClass)
+					.getResultList()).build();
+		} else if (EmptyHandler.isNotEmpty(theGender)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT reg FROM Start reg WHERE reg.gender=:gender")
+					.setParameter("gender", theGender)
+					.getResultList()).build();
+
+		} else if (EmptyHandler.isNotEmpty(theClass)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT reg FROM Start reg WHERE reg.clazz=:class")
+					.setParameter("class", theClass)
+					.getResultList()).build();
+		}
+		return Response.ok(itsEntityManager.createQuery("SELECT reg FROM Start reg ORDER BY reg.startnumber").getResultList()).build();
 	}
 
 	@GET
@@ -60,7 +76,7 @@ public class RegistrationServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@PathParam("did") Integer theDid) throws Exception {
-		Registrering aObject = itsEntityManager.find(Registrering.class, theDid);
+		Registration aObject = itsEntityManager.find(Registration.class, theDid);
 		if (aObject != null) {
 			return Response.ok(aObject).build();
 		} else {
@@ -69,11 +85,11 @@ public class RegistrationServiceBean {
 	}
 
 	@GET
-	@Path("/{startnumber}/startnummer")
+	@Path("/{startnumber}/startnumber")
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response getByStartNumber(@PathParam("startnumber") Integer theStartnumber) throws Exception {
-		Registrering aObject = itsEntityManager.createQuery("SELECT reg FROM Registrering reg WHERE reg.startnumber=:startnumber", Registrering.class)
+		Registration aObject = itsEntityManager.createQuery("SELECT reg FROM Registration reg WHERE reg.startnumber=:startnumber", Registration.class)
 				.setParameter("startnumber", theStartnumber)
 				.getSingleResult();
 		if (aObject != null) {

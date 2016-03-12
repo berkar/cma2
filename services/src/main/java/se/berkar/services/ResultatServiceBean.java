@@ -14,14 +14,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import se.berkar.model.Resultat;
+import se.berkar.common.helpers.EmptyHandler;
+import se.berkar.model.Result;
 import se.berkar.qualifiers.CmaLogger;
 import se.berkar.qualifiers.CmaServiceDB;
 
 import org.jboss.logging.Logger;
 
 @Stateless
-@Path("resultat")
+@Path("result")
 public class ResultatServiceBean {
 
 	@Inject
@@ -51,7 +52,22 @@ public class ResultatServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@QueryParam("gender") String theGender, @QueryParam("class") String theClass) throws Exception {
-		return Response.status(Response.Status.NO_CONTENT).build();
+		if (EmptyHandler.isNotEmpty(theGender) && EmptyHandler.isNotEmpty(theClass)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.gender=:gender AND res.clazz=:class")
+					.setParameter("gender", theGender)
+					.setParameter("class", theClass)
+					.getResultList()).build();
+		} else if (EmptyHandler.isNotEmpty(theGender)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.gender=:gender")
+					.setParameter("gender", theGender)
+					.getResultList()).build();
+
+		} else if (EmptyHandler.isNotEmpty(theClass)) {
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.clazz=:class")
+					.setParameter("class", theClass)
+					.getResultList()).build();
+		}
+		return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res ORDER BY res.finishtime").getResultList()).build();
 	}
 
 	@GET
@@ -59,7 +75,7 @@ public class ResultatServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@PathParam("did") Integer theDid) throws Exception {
-		Resultat aObject = itsEntityManager.find(Resultat.class, theDid);
+		Result aObject = itsEntityManager.find(Result.class, theDid);
 		if (aObject != null) {
 			return Response.ok(aObject).build();
 		} else {
@@ -68,11 +84,11 @@ public class ResultatServiceBean {
 	}
 
 	@GET
-	@Path("/{startnumber}/startnummer")
+	@Path("/{startnumber}/startnumber")
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response getByStartNumber(@PathParam("startnumber") Integer theStartnumber) throws Exception {
-		Resultat aObject = itsEntityManager.createQuery("SELECT reg FROM Resultat reg WHERE reg.startnumber=:startnumber", Resultat.class)
+		Result aObject = itsEntityManager.createQuery("SELECT reg FROM Result reg WHERE reg.startnumber=:startnumber", Result.class)
 				.setParameter("startnumber", theStartnumber)
 				.getSingleResult();
 		if (aObject != null) {
