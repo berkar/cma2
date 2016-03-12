@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import se.berkar.CmaConfiguration;
 import se.berkar.common.helpers.EmptyHandler;
 import se.berkar.model.Registration;
 import se.berkar.qualifiers.CmaLogger;
@@ -33,6 +34,9 @@ public class RegistrationServiceBean {
 	@CmaServiceDB
 	private EntityManager itsEntityManager;
 
+	@Inject
+	private CmaConfiguration itsConfiguration;
+
 	@HEAD
 	@Path("/ping")
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -40,7 +44,6 @@ public class RegistrationServiceBean {
 		itsLog.trace("Status Ping received!");
 		return true;
 	}
-
 
 	/**
 	 * Get the startlist, based on optional params

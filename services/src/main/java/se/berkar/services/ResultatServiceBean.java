@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import se.berkar.CmaConfiguration;
 import se.berkar.common.helpers.EmptyHandler;
 import se.berkar.model.Result;
 import se.berkar.qualifiers.CmaLogger;
@@ -32,6 +33,9 @@ public class ResultatServiceBean {
 	@Inject
 	@CmaServiceDB
 	private EntityManager itsEntityManager;
+
+	@Inject
+	private CmaConfiguration itsConfiguration;
 
 	@HEAD
 	@Path("/ping")

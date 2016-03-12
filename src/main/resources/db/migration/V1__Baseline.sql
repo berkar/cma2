@@ -41,8 +41,10 @@ GRANT SELECT ON TABLE "${schemaName}"."gender" TO "${roleName}";
 --------------------------------------------------------------------------------------------------
 
 CREATE TABLE "${schemaName}"."class" (
-		"key"  CHARACTER VARYING(6)   NOT NULL,
-		"namn" CHARACTER VARYING(100) NOT NULL
+		"key"          CHARACTER VARYING(6)   NOT NULL,
+		"namn"         CHARACTER VARYING(100) NOT NULL,
+		"start_number" INTEGER,
+		"start_time"   CHARACTER VARYING(5)
 )
 WITH (OIDS = FALSE
 );
@@ -53,12 +55,12 @@ ALTER TABLE "${schemaName}"."class" ADD CONSTRAINT "ixpk_class" PRIMARY KEY ("ke
 
 -- Add data
 INSERT INTO "${schemaName}"."class" (
-		key, namn
-) VALUES ('elit', 'Elit');
+		key, namn, start_number, start_time
+) VALUES ('elit', 'Elit', 100, '10:00');
 
 INSERT INTO "${schemaName}"."class" (
-		key, namn
-) VALUES ('motion', 'Motion');
+		key, namn, start_number, start_time
+) VALUES ('motion', 'Motion', 200, '12:00');
 
 GRANT SELECT ON TABLE "${schemaName}"."class" TO "${roleName}";
 
@@ -116,7 +118,7 @@ ALTER TABLE "${schemaName}"."order_list" ADD CONSTRAINT "r_order" FOREIGN KEY ("
 --------------------------------------------------------------------------------------------------
 
 CREATE TABLE "${schemaName}"."time_list" (
-		"did"         INTEGER NOT NULL,
+		"did"         INTEGER   NOT NULL,
 		"finish_time" TIMESTAMP NOT NULL
 )
 WITH (OIDS = FALSE

@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
@@ -17,7 +19,7 @@ public class Item {
 	private String itsFirstname;
 	private String itsLastname;
 	private String itsGender;
-	private String itsClazz;
+	private Clazz itsClazz;
 	private Integer itsStartnumber;
 	private Date itsStarttime;
 	private Boolean itsDidNotStart;
@@ -62,12 +64,13 @@ public class Item {
 		itsGender = theGender;
 	}
 
-	@Column(name = "class", nullable = true)
-	public String getClazz() {
+	@ManyToOne
+	@JoinColumn(name = "class", nullable = false)
+	public Clazz getClazz() {
 		return itsClazz;
 	}
 
-	public void setClazz(String theClazz) {
+	public void setClazz(Clazz theClazz) {
 		itsClazz = theClazz;
 	}
 
