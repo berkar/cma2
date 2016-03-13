@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,7 +25,7 @@ import org.jboss.logging.Logger;
 
 @Stateless
 @Path("result")
-public class ResultatServiceBean {
+public class ResultServiceBean {
 
 	@Inject
 	@CmaLogger
@@ -102,4 +103,8 @@ public class ResultatServiceBean {
 		}
 	}
 
+	@POST
+	public Response save() {
+		return Response.status(Response.Status.NO_CONTENT).build();
+	}
 }

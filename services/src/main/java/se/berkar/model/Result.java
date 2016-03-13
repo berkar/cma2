@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "resultat_gv")
+@Table(name = "result_gv")
 @SequenceGenerator(name = "SQ_CMA", sequenceName = "sq_cma", allocationSize = 1)
 public class Result extends Item {
 

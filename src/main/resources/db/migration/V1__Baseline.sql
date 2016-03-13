@@ -95,40 +95,24 @@ ALTER TABLE "${schemaName}"."registration_list" ADD CONSTRAINT "r_class" FOREIGN
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."registration_list" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
--- Table Order list (the order in which the startnumber finishes)
+-- Table Result list (the order in which the startnumber finishes)
 --------------------------------------------------------------------------------------------------
 
-CREATE TABLE "${schemaName}"."order_list" (
-		"did"          INTEGER NOT NULL,
-		"start_number" INTEGER NOT NULL
+CREATE TABLE "${schemaName}"."result_list" (
+		"did"          INTEGER   NOT NULL,
+		"start_number" INTEGER   NOT NULL,
+		"finish_time"  TIMESTAMP NOT NULL
 )
 WITH (OIDS = FALSE
 );
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."order_list" ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."order_list" ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
+ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
 
-ALTER TABLE "${schemaName}"."order_list" ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."registration_list" ("start_number");
-
---------------------------------------------------------------------------------------------------
--- Table Time list (the order in which the finish times are listed)
---------------------------------------------------------------------------------------------------
-
-CREATE TABLE "${schemaName}"."time_list" (
-		"did"         INTEGER   NOT NULL,
-		"finish_time" TIMESTAMP NOT NULL
-)
-WITH (OIDS = FALSE
-);
-
--- Add keys
-
-ALTER TABLE "${schemaName}"."time_list" ADD CONSTRAINT "ixpk_time_list" PRIMARY KEY ("did");
-
-ALTER TABLE "${schemaName}"."time_list" ADD CONSTRAINT "ixak_time_list" UNIQUE ("finish_time");
+ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."registration_list" ("start_number");
 
 --------------------------------------------------------------------------------------------------
 -- View Result list
@@ -144,12 +128,11 @@ CREATE VIEW start_list_gv AS
 -- View Result list
 --------------------------------------------------------------------------------------------------
 
-CREATE VIEW resultat_gv AS
+CREATE VIEW result_gv AS
 		SELECT
 				reg.*,
-				tim.did AS finish_order,
-				tim.finish_time
-		FROM "${schemaName}".registration_list AS reg, "${schemaName}".order_list AS ord, "${schemaName}".time_list AS tim
-		WHERE reg.start_number = ord.start_number AND ord.did = tim.did AND
-					tim.finish_time IS NOT NULL
-		ORDER BY finish_time DESC;
+				res.did AS finish_order,
+				res.finish_time
+		FROM "${schemaName}".registration_list AS reg, "${schemaName}".result_list AS res
+		WHERE reg.start_number = res.start_number AND res.finish_time IS NOT NULL
+		ORDER BY res.finish_time DESC;
