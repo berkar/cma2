@@ -2,7 +2,7 @@ package se.berkar.model;
 
 import java.util.Map;
 
-public class Resultat implements Loadable {
+public class ResultatX implements Loadable {
 
     private Integer itsPlace;
     private Integer itsBib;

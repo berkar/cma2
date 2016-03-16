@@ -1,5 +1,8 @@
 package se.berkar.services;
 
+import java.io.InputStream;
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,15 +20,15 @@ import javax.ws.rs.core.Response;
 
 import se.berkar.CmaConfiguration;
 import se.berkar.common.helpers.EmptyHandler;
-import se.berkar.model.Result;
+import se.berkar.model.Resultat;
 import se.berkar.qualifiers.CmaLogger;
 import se.berkar.qualifiers.CmaServiceDB;
 
 import org.jboss.logging.Logger;
 
 @Stateless
-@Path("result")
-public class ResultServiceBean {
+@Path("resultat")
+public class ResultatServiceBean {
 
 	@Inject
 	@CmaLogger
@@ -58,21 +61,21 @@ public class ResultServiceBean {
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@QueryParam("gender") String theGender, @QueryParam("class") String theClass) throws Exception {
 		if (EmptyHandler.isNotEmpty(theGender) && EmptyHandler.isNotEmpty(theClass)) {
-			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.gender=:gender AND res.clazz=:class")
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Resultat res WHERE res.gender=:gender AND res.clazz=:class")
 					.setParameter("gender", theGender)
 					.setParameter("class", theClass)
 					.getResultList()).build();
 		} else if (EmptyHandler.isNotEmpty(theGender)) {
-			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.gender=:gender")
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Resultat res WHERE res.gender=:gender")
 					.setParameter("gender", theGender)
 					.getResultList()).build();
 
 		} else if (EmptyHandler.isNotEmpty(theClass)) {
-			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res WHERE res.clazz=:class")
+			return Response.ok(itsEntityManager.createQuery("SELECT res FROM Resultat res WHERE res.clazz=:class")
 					.setParameter("class", theClass)
 					.getResultList()).build();
 		}
-		return Response.ok(itsEntityManager.createQuery("SELECT res FROM Result res ORDER BY res.finishtime").getResultList()).build();
+		return Response.ok(itsEntityManager.createQuery("SELECT res FROM Resultat res ORDER BY res.finishtime").getResultList()).build();
 	}
 
 	@GET
@@ -80,7 +83,7 @@ public class ResultServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@PathParam("did") Integer theDid) throws Exception {
-		Result aObject = itsEntityManager.find(Result.class, theDid);
+		Resultat aObject = itsEntityManager.find(Resultat.class, theDid);
 		if (aObject != null) {
 			return Response.ok(aObject).build();
 		} else {
@@ -93,7 +96,7 @@ public class ResultServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response getByStartNumber(@PathParam("startnumber") Integer theStartnumber) throws Exception {
-		Result aObject = itsEntityManager.createQuery("SELECT reg FROM Result reg WHERE reg.startnumber=:startnumber", Result.class)
+		Resultat aObject = itsEntityManager.createQuery("SELECT reg FROM Resultat reg WHERE reg.startnumber=:startnumber", Resultat.class)
 				.setParameter("startnumber", theStartnumber)
 				.getSingleResult();
 		if (aObject != null) {
@@ -106,5 +109,12 @@ public class ResultServiceBean {
 	@POST
 	public Response save() {
 		return Response.status(Response.Status.NO_CONTENT).build();
+	}
+
+	public void upload(List<Resultat> theResultatList) {
+		// Delete all in Resultat, and add content from List
+		itsEntityManager.createQuery("DELETE FROM Resultat").executeUpdate();
+		theResultatList.stream().forEach(theResultat -> itsEntityManager.persist(theResultat));
+
 	}
 }

@@ -65,16 +65,38 @@ INSERT INTO "${schemaName}"."class" (
 GRANT SELECT ON TABLE "${schemaName}"."class" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
+-- Table Anmalning
+--------------------------------------------------------------------------------------------------
+
+CREATE TABLE "${schemaName}"."anmalning" (
+		"did"    INTEGER                NOT NULL,
+		"name"   CHARACTER VARYING(256) NOT NULL,
+		"gender" CHARACTER VARYING(6)   NOT NULL,
+		"class"  CHARACTER VARYING(6)   NOT NULL
+)
+WITH (OIDS = FALSE
+);
+
+-- Add keys
+
+ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "ixpk_anmalning" PRIMARY KEY ("did");
+
+ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
+
+ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."anmalning" TO "${roleName}";
+
+--------------------------------------------------------------------------------------------------
 -- Table Registration list
 --------------------------------------------------------------------------------------------------
 
-CREATE TABLE "${schemaName}"."registration_list" (
-		"did"            INTEGER               NOT NULL,
-		"first_name"     CHARACTER VARYING(40) NOT NULL,
-		"last_name"      CHARACTER VARYING(40) NOT NULL,
-		"gender"         CHARACTER VARYING(6)  NOT NULL,
-		"class"          CHARACTER VARYING(6)  NOT NULL,
-		"start_number"   INTEGER,
+CREATE TABLE "${schemaName}"."start" (
+		"did"            INTEGER                NOT NULL,
+		"name"           CHARACTER VARYING(256) NOT NULL,
+		"gender"         CHARACTER VARYING(6)   NOT NULL,
+		"class"          CHARACTER VARYING(6)   NOT NULL,
+		"start_number"   INTEGER                NOT NULL,
 		"start_time"     TIMESTAMP,
 		"did_not_start"  BOOLEAN,
 		"did_not_finish" BOOLEAN
@@ -84,21 +106,21 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."registration_list" ADD CONSTRAINT "ixpk_registration_list" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "ixpk_start" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."registration_list" ADD CONSTRAINT "ixak_registration_list" UNIQUE ("start_number");
+ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "ixak_start" UNIQUE ("start_number");
 
-ALTER TABLE "${schemaName}"."registration_list" ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
+ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
 
-ALTER TABLE "${schemaName}"."registration_list" ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
+ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
 
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."registration_list" TO "${roleName}";
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."start" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
--- Table Result list (the order in which the startnumber finishes)
+-- Table Resultat (the order in which the startnumber finishes)
 --------------------------------------------------------------------------------------------------
 
-CREATE TABLE "${schemaName}"."result_list" (
+CREATE TABLE "${schemaName}"."resultat" (
 		"did"          INTEGER   NOT NULL,
 		"start_number" INTEGER   NOT NULL,
 		"finish_time"  TIMESTAMP NOT NULL
@@ -108,31 +130,21 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
+ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
 
-ALTER TABLE "${schemaName}"."result_list" ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."registration_list" ("start_number");
-
---------------------------------------------------------------------------------------------------
--- View Result list
---------------------------------------------------------------------------------------------------
-
-CREATE VIEW start_list_gv AS
-		SELECT *
-		FROM "${schemaName}".registration_list
-		WHERE start_number IS NOT NULL
-		ORDER BY start_number;
+ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."start" ("start_number");
 
 --------------------------------------------------------------------------------------------------
 -- View Result list
 --------------------------------------------------------------------------------------------------
 
-CREATE VIEW result_gv AS
+CREATE VIEW resultat_gv AS
 		SELECT
-				reg.*,
-				res.did AS finish_order,
-				res.finish_time
-		FROM "${schemaName}".registration_list AS reg, "${schemaName}".result_list AS res
-		WHERE reg.start_number = res.start_number AND res.finish_time IS NOT NULL
-		ORDER BY res.finish_time DESC;
+				start.*,
+				resultat.did AS finish_order,
+				resultat.finish_time
+		FROM "${schemaName}".start, "${schemaName}".resultat
+		WHERE start.start_number = resultat.start_number AND resultat.finish_time IS NOT NULL
+		ORDER BY resultat.finish_time DESC;

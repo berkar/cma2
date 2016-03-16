@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import se.berkar.common.helpers.EmptyHandler;
 import se.berkar.excel.helpers.WorkbookHelper;
 import se.berkar.model.Loadable;
-import se.berkar.model.Resultat;
+import se.berkar.model.ResultatX;
 
 import java.net.URL;
 import java.util.Map;
@@ -35,9 +35,9 @@ public class App {
         try {
             itsWorkbook = WorkbookHelper.getWorkbook(new URL(FILE));
 
-            Map<String, Resultat> resultatMap = load(tabPos, Resultat.class, keyColumnName, headerRowPos);
+            Map<String, ResultatX> resultatMap = load(tabPos, ResultatX.class, keyColumnName, headerRowPos);
 
-            for (Map.Entry<String, Resultat> entry : resultatMap.entrySet()) {
+            for (Map.Entry<String, ResultatX> entry : resultatMap.entrySet()) {
                 System.out.println(entry.getKey() + " => " + entry.getValue());
             }
         } catch (Exception e) {

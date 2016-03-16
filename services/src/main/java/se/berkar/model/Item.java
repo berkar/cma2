@@ -1,7 +1,5 @@
 package se.berkar.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +14,9 @@ import javax.validation.constraints.NotNull;
 public class Item {
 
 	private Integer itsDid;
-	private String itsFirstname;
-	private String itsLastname;
+	private String itsName;
 	private String itsGender;
 	private Clazz itsClazz;
-	private Integer itsStartnumber;
-	private Date itsStarttime;
-	private Boolean itsDidNotStart;
-	private Boolean itsDidNotFinish;
 
 	@Id
 	@Column(name = "did")
@@ -37,22 +30,13 @@ public class Item {
 	}
 
 	@NotNull
-	@Column(name = "first_name", nullable = false)
-	public String getFirstname() {
-		return itsFirstname;
+	@Column(name = "name", nullable = false)
+	public String getName() {
+		return itsName;
 	}
 
-	public void setFirstname(String theFirstname) {
-		itsFirstname = theFirstname;
-	}
-
-	@Column(name = "last_name", nullable = true)
-	public String getLastname() {
-		return itsLastname;
-	}
-
-	public void setLastname(String theLastname) {
-		itsLastname = theLastname;
+	public void setName(String theName) {
+		itsName = theName;
 	}
 
 	@Column(name = "gender", nullable = true)
@@ -74,40 +58,5 @@ public class Item {
 		itsClazz = theClazz;
 	}
 
-	@Column(name = "start_number")
-	public Integer getStartnumber() {
-		return itsStartnumber;
-	}
-
-	public void setStartnumber(Integer theStartnumber) {
-		itsStartnumber = theStartnumber;
-	}
-
-	@Column(name = "start_time")
-	public Date getStarttime() {
-		return itsStarttime;
-	}
-
-	public void setStarttime(Date theStarttime) {
-		itsStarttime = theStarttime;
-	}
-
-	@Column(name = "did_not_start")
-	public Boolean getDidNotStart() {
-		return itsDidNotStart;
-	}
-
-	public void setDidNotStart(Boolean theDidNotStart) {
-		itsDidNotStart = theDidNotStart;
-	}
-
-	@Column(name = "did_not_finish")
-	public Boolean getDidNotFinish() {
-		return itsDidNotFinish;
-	}
-
-	public void setDidNotFinish(Boolean theDidNotFinish) {
-		itsDidNotFinish = theDidNotFinish;
-	}
 }
 

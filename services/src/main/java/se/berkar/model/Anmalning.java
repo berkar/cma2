@@ -6,8 +6,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "registration_list")
+@Table(name = "ANMALNING")
 @SequenceGenerator(name = "SQ_CMA", sequenceName = "sq_cma", allocationSize = 1)
-public class Registration extends Item {
+public class Anmalning extends Item {
 }
 

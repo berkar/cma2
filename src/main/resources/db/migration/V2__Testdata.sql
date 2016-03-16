@@ -1,24 +1,22 @@
 -- TODO Remove this when testphase is over!
-INSERT INTO "${schemaName}".registration_list (
+INSERT INTO "${schemaName}".start (
 		"did",
-		"first_name",
-		"last_name",
+		"name",
 		"gender",
 		"class",
 		"start_number"
 )
 VALUES (
-		1, 'Herr', 'One', 'herrar', 'elit', 1
+		1, 'Marcus Hellner', 'herrar', 'elit', 1
 );
 
-INSERT INTO "${schemaName}".registration_list (
+INSERT INTO "${schemaName}".start (
 		"did",
-		"first_name",
-		"last_name",
+		"name",
 		"gender",
 		"class",
 		"start_number"
 )
 VALUES (
-		2, 'Dam', 'One', 'damer', 'elit', 2
+		2, 'Stina Nilsson', 'damer', 'elit', 2
 );
