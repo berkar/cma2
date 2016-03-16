@@ -18,6 +18,13 @@ public class Item {
 	private String itsGender;
 	private Clazz itsClazz;
 
+	public Item() {
+	}
+
+	public Item(String theName) {
+		itsName = theName;
+	}
+
 	@Id
 	@Column(name = "did")
 	@GeneratedValue(generator = "SQ_CMA", strategy = GenerationType.SEQUENCE)
@@ -49,7 +56,7 @@ public class Item {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "class", nullable = false)
+	@JoinColumn(name = "class", nullable = true)
 	public Clazz getClazz() {
 		return itsClazz;
 	}

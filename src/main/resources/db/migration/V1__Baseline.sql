@@ -71,8 +71,8 @@ GRANT SELECT ON TABLE "${schemaName}"."class" TO "${roleName}";
 CREATE TABLE "${schemaName}"."anmalning" (
 		"did"    INTEGER                NOT NULL,
 		"name"   CHARACTER VARYING(256) NOT NULL,
-		"gender" CHARACTER VARYING(6)   NOT NULL,
-		"class"  CHARACTER VARYING(6)   NOT NULL
+		"gender" CHARACTER VARYING(6),
+		"class"  CHARACTER VARYING(6)
 )
 WITH (OIDS = FALSE
 );

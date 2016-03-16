@@ -9,5 +9,12 @@ import javax.persistence.Table;
 @Table(name = "ANMALNING")
 @SequenceGenerator(name = "SQ_CMA", sequenceName = "sq_cma", allocationSize = 1)
 public class Anmalning extends Item {
+
+	public Anmalning() {
+	}
+
+	public Anmalning(String theName) {
+		super(theName);
+	}
 }
 
