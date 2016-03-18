@@ -5,6 +5,19 @@
 		 version="3.1">
 	<display-name>Competition Management Application R2 (CMA2)</display-name>
 
+<!--
+	<servlet>
+		<servlet-name>UploadAnmalningarServlet</servlet-name>
+		<servlet-class>se.berkar.web.servlets.UploadAnmalningarServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UploadAnmalningarServlet</servlet-name>
+		<url-pattern>/upload/anmalningar</url-pattern>
+	</servlet-mapping>
+-->
+
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

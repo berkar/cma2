@@ -17,18 +17,25 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class AnmalningReader {
+	private final static Integer SHEET = 0;
+	private final static Integer ROW_POS = 1;
+	private final static Integer COLUMN_POS = 1;
+
 	public List<Anmalning> fromStream(final InputStream inputStream) throws IllegalFormatException {
 		final List<Anmalning> results = new ArrayList<>();
 		try {
 			final Workbook workbook = WorkbookFactory.create(inputStream);
-			if (workbook.getNumberOfSheets() != 1) {
-				throw new IllegalArgumentException("Filen måste innehålla exakt ett arbetsblad");
+			if (workbook.getNumberOfSheets() > SHEET) {
+				throw new IllegalArgumentException("Felaktigt antal arbetsblad!");
 			}
-			Sheet sheet = workbook.getSheetAt(0);
-			for (int rowIndex = 0; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-				String aName = parseStringValue(sheet.getRow(rowIndex).getCell(0), rowIndex);
-				if (EmptyHandler.isNotEmpty(aName)) {
-					results.add(new Anmalning(aName));
+			Sheet sheet = workbook.getSheetAt(SHEET);
+			for (int rowIndex = ROW_POS; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+				String aFirstname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS), rowIndex);
+				String aLastname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS + 1), rowIndex);
+				String aGender = null;
+				String aClass = null;
+				if (EmptyHandler.isNotEmpty(aFirstname)) {
+					results.add(new Anmalning(aFirstname + " " + aLastname));
 				}
 			}
 		} catch (InvalidFormatException | IOException e) {

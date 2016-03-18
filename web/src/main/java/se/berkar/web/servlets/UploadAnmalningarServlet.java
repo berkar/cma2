@@ -21,7 +21,7 @@ import se.berkar.services.AnmalningServiceBean;
 
 import org.jboss.logging.Logger;
 
-@WebServlet(name = "UploadAnmalningarServlet", urlPatterns = {"/upload/anmalningar/"})
+@WebServlet("/upload/anmalningar")
 @MultipartConfig
 public class UploadAnmalningarServlet extends HttpServlet {
 
@@ -52,20 +52,20 @@ public class UploadAnmalningarServlet extends HttpServlet {
 	 */
 	protected void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-
-		final Part filePart = request.getPart("0");
-		final String fileName = getFileName(filePart);
-
-		InputStream filecontent = null;
-		try {
-			filecontent = filePart.getInputStream();
-			itsLog.error("Fil " + fileName + " laddas upp");
-			List<Anmalning> importSubject = itsReader.fromStream(filecontent);
-			itsAnmalningService.upload(importSubject);
-		} catch (final IllegalFormatException | IOException exception) {
-			itsLog.error("Problems during file upload.", exception);
-		} finally {
-			close(filecontent);
+		final Part filePart = request.getPart("anmalningar");
+		if (filePart != null) {
+			final String fileName = getFileName(filePart);
+			InputStream filecontent = null;
+			try {
+				filecontent = filePart.getInputStream();
+				itsLog.error("Fil " + fileName + " laddas upp");
+				List<Anmalning> importSubject = itsReader.fromStream(filecontent);
+				itsAnmalningService.upload(importSubject);
+			} catch (final IllegalFormatException | IOException exception) {
+				itsLog.error("Problems during file upload.", exception);
+			} finally {
+				close(filecontent);
+			}
 		}
 	}
 

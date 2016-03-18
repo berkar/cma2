@@ -5,7 +5,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,6 +24,10 @@ import se.berkar.model.Start;
 import se.berkar.qualifiers.CmaLogger;
 import se.berkar.qualifiers.CmaServiceDB;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.jboss.logging.Logger;
 
 @Stateless
@@ -62,34 +65,17 @@ public class StartServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@QueryParam("name") String theName, @QueryParam("gender") String theGender, @QueryParam("class") String theClass) throws Exception {
-		StringBuilder aBuilder = new StringBuilder("SELECT Start FROM Start");
-		if (EmptyHandler.isNotEmpty(theGender) || EmptyHandler.isNotEmpty(theGender) || EmptyHandler.isNotEmpty(theClass)) {
-			aBuilder.append(" WHERE ");
-			String aSeparator = "";
-			if (EmptyHandler.isNotEmpty(theName)) {
-				aBuilder.append(aSeparator).append("name=:name");
-				aSeparator = " AND ";
-			}
-			if (EmptyHandler.isNotEmpty(theGender)) {
-				aBuilder.append(aSeparator).append("gender=:gender");
-				aSeparator = " AND ";
-			}
-			if (EmptyHandler.isNotEmpty(theClass)) {
-				aBuilder.append(aSeparator).append("class=:class");
-				aSeparator = " AND ";
-			}
-		}
-		Query aQuery = itsEntityManager.createQuery(aBuilder.toString());
+		Criteria aCriteria = ((Session) itsEntityManager.getDelegate()).createCriteria(Start.class);
 		if (EmptyHandler.isNotEmpty(theName)) {
-			aQuery.setParameter("name", theName);
+			aCriteria.add(Restrictions.ilike("name", theName.trim().replaceAll(" ", "%"), MatchMode.START));
 		}
 		if (EmptyHandler.isNotEmpty(theGender)) {
-			aQuery.setParameter("gender", theGender);
+			aCriteria.add(Restrictions.eq("gender", theGender.trim()));
 		}
 		if (EmptyHandler.isNotEmpty(theClass)) {
-			aQuery.setParameter("class", theClass);
+			aCriteria.add(Restrictions.eq("class", theClass.trim()));
 		}
-		return Response.ok(aQuery.getResultList()).build();
+		return Response.ok(aCriteria.list()).build();
 	}
 
 	@GET

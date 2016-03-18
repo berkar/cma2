@@ -121,9 +121,9 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."start" TO "${role
 --------------------------------------------------------------------------------------------------
 
 CREATE TABLE "${schemaName}"."resultat" (
-		"did"          INTEGER   NOT NULL,
-		"start_number" INTEGER   NOT NULL,
-		"finish_time"  TIMESTAMP NOT NULL
+		"did"          INTEGER NOT NULL,
+		"start_number" INTEGER NOT NULL,
+		"finish_time"  FLOAT8 NOT NULL
 )
 WITH (OIDS = FALSE
 );
@@ -140,7 +140,7 @@ ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "r_order" FOREIGN KEY ("st
 -- View Result list
 --------------------------------------------------------------------------------------------------
 
-CREATE VIEW resultat_gv AS
+CREATE VIEW resultatlista_gv AS
 		SELECT
 				start.*,
 				resultat.did AS finish_order,
