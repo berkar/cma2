@@ -1,0 +1,15 @@
+# Development version
+version: '2'
+services:
+  web:
+    build:
+     context: src/main/docker/wildfly
+     dockerfile: Dockerfile-dev
+    ports:
+     - "8080:8080"
+     - "9990:9990"
+     - "9999:9999"
+     - "8787:8787"
+  postgres:
+    ports:
+     - "5432:5432"

@@ -19,3 +19,8 @@ docker run --rm=true -p 8080:8080 -p 9990:9990 -p 9999:9999 --link cma2-postgres
 
 #### Build and deploy (incl. datasource & driver)
 mvn clean install -Pdeploy-localhost
+
+## Docker compose
+- Start dev environment: *docker-compose up -d*
+- Start prod environment: *docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d*
+- Stop environment: *docker-compose down*
