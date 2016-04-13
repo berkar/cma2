@@ -63,6 +63,11 @@ public class AnmalningServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@QueryParam("name") String theName, @QueryParam("gender") String theGender, @QueryParam("class") String theClass) throws Exception {
+		return Response.ok(getNative(theName, theGender, theClass)).build();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Anmalning> getNative(String theName, String theGender, String theClass) {
 		Criteria aCriteria = ((Session) itsEntityManager.getDelegate()).createCriteria(Anmalning.class);
 		if (EmptyHandler.isNotEmpty(theName)) {
 			aCriteria.add(Restrictions.ilike("name", theName.trim().replaceAll(" ", "%"), MatchMode.START));
@@ -73,7 +78,7 @@ public class AnmalningServiceBean {
 		if (EmptyHandler.isNotEmpty(theClass)) {
 			aCriteria.add(Restrictions.eq("class", theClass.trim()));
 		}
-		return Response.ok(aCriteria.list()).build();
+		return aCriteria.list();
 	}
 
 	@GET
@@ -81,12 +86,16 @@ public class AnmalningServiceBean {
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Response get(@PathParam("did") Integer theDid) throws Exception {
-		Anmalning aObject = itsEntityManager.find(Anmalning.class, theDid);
+		Anmalning aObject = getNative(theDid);
 		if (aObject != null) {
 			return Response.ok(aObject).build();
 		} else {
 			return Response.status(Response.Status.NO_CONTENT).build();
 		}
+	}
+
+	public Anmalning getNative(Integer theDid) {
+		return itsEntityManager.find(Anmalning.class, theDid);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

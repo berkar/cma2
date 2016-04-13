@@ -5,20 +5,48 @@
 		 version="3.1">
 	<display-name>Competition Management Application R2 (CMA2)</display-name>
 
-<!--
-	<servlet>
-		<servlet-name>UploadAnmalningarServlet</servlet-name>
-		<servlet-class>se.berkar.web.servlets.UploadAnmalningarServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+	<context-param>
+		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+	<context-param>
+		<description>
+			State saving method: 'client' or 'server' (default). See JSF Specification section 2.5.2
+		</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>UploadAnmalningarServlet</servlet-name>
-		<url-pattern>/upload/anmalningar</url-pattern>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
--->
+
+	<!--
+		<servlet>
+			<servlet-name>UploadAnmalningarServlet</servlet-name>
+			<servlet-class>se.berkar.web.servlets.UploadAnmalningarServlet</servlet-class>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+
+		<servlet-mapping>
+			<servlet-name>UploadAnmalningarServlet</servlet-name>
+			<url-pattern>/upload/anmalningar</url-pattern>
+		</servlet-mapping>
+	-->
 
 	<welcome-file-list>
+		<welcome-file>index.jsf</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 

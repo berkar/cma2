@@ -21,7 +21,7 @@ import se.berkar.services.AnmalningServiceBean;
 
 import org.jboss.logging.Logger;
 
-@WebServlet("/upload/anmalningar")
+@WebServlet(name = "UploadAnmalningarServlet", urlPatterns = {"/upload/anmalningar"})
 @MultipartConfig
 public class UploadAnmalningarServlet extends HttpServlet {
 

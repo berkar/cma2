@@ -62,7 +62,11 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-hibernate4</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>5.3</version>
+		</dependency>
 		<!--
 				<dependency>
 					<groupId>org.hibernate</groupId>
@@ -169,11 +173,11 @@
 									<address>subsystem=datasources,data-source=CmaDS</address>
 									<resources>
 										<resource>
-<!--
-											<enableResource>true</enableResource>
--->
+											<!--
+																						<enableResource>true</enableResource>
+											-->
 											<properties>
-												<connection-url>jdbc:postgresql://cma2-postgres:5432/cma2</connection-url>
+												<connection-url>jdbc:postgresql://cma2-db:5432/cma2</connection-url>
 												<jndi-name>java:jboss/datasources/CmaDS</jndi-name>
 												<enabled>true</enabled>
 												<enable>true</enable>

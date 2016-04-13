@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:outputLabel value="Anmälningar"/>
+    <h:form>
+        <h:dataTable id="anmalningarTable" styleClass="bordered" value="#{anmalningBean.anmalningar}" var="anmalning">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText style="font-weight: bold;" value="Namn"/>
+                </f:facet>
+                #{anmalning.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText style="font-weight: bold;" value="Klass"/>
+                </f:facet>
+                #{anmalning.clazz.namn}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText style="font-weight: bold;" value="Kön"/>
+                </f:facet>
+                #{anmalning.gender}
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</f:view>
+</html>

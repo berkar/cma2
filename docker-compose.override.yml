@@ -1,7 +1,7 @@
 # Development version
 version: '2'
 services:
-  web:
+  cma-web:
     build:
      context: src/main/docker/wildfly
      dockerfile: Dockerfile-dev
@@ -10,6 +10,6 @@ services:
      - "9990:9990"
      - "9999:9999"
      - "8787:8787"
-  postgres:
+  cma-db:
     ports:
      - "5432:5432"

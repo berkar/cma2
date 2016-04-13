@@ -1,10 +1,10 @@
 version: '2'
 services:
-  web:
+  cma-web:
     build: src/main/docker/wildfly
     depends_on:
-     - postgres
+     - cma-db
     links:
-      - postgres:cma2-postgres
-  postgres:
+      - cma-db:cma2-db
+  cma-db:
     build: src/main/docker/postgres
