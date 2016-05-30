@@ -66,8 +66,8 @@ public class ResultatlistaServiceBean {
 		if (EmptyHandler.isNotEmpty(theClass)) {
 			aCriteria.add(Restrictions.eq("class", theClass.trim()));
 		}
-		aCriteria.add(Restrictions.isNotNull("finishTime"));
-		aCriteria.addOrder(Order.asc("finishTime"));
+		aCriteria.add(Restrictions.isNotNull("finishtime"));
+		aCriteria.addOrder(Order.asc("finishtime"));
 		return Response.ok(aCriteria.list()).build();
 	}
 }

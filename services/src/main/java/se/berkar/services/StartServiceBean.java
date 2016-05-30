@@ -27,6 +27,7 @@ import se.berkar.qualifiers.CmaServiceDB;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.jboss.logging.Logger;
 
@@ -75,6 +76,7 @@ public class StartServiceBean {
 		if (EmptyHandler.isNotEmpty(theClass)) {
 			aCriteria.add(Restrictions.eq("class", theClass.trim()));
 		}
+		aCriteria.addOrder(Order.asc("startnumber"));
 		return Response.ok(aCriteria.list()).build();
 	}
 
