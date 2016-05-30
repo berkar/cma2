@@ -24,3 +24,10 @@ mvn clean install -Pdeploy-localhost
 - Start dev environment: *docker-compose up -d*
 - Start prod environment: *docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d*
 - Stop environment: *docker-compose down*
+
+#### Notes
+- To run docker in git bash: *eval $(docker-machine env default)*
+- http://stackoverflow.com/questions/29101043/cant-connect-to-docker-from-docker-compose
+
+There are problems running docker with VPN running. See:
+- http://stackoverflow.com/questions/33992729/cannot-get-docker-machine-to-work-with-virtualbox-when-using-cisco-vpn-anyconnec
