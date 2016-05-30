@@ -96,27 +96,19 @@ GRANT SELECT ON TABLE "${schemaName}"."class" TO "${roleName}";
 -- Table Anmalning
 --------------------------------------------------------------------------------------------------
 
-CREATE TABLE "${schemaName}"."anmalning" (
-		"did"    INTEGER                NOT NULL,
-		"name"   CHARACTER VARYING(256) NOT NULL,
-		"gender" CHARACTER VARYING(6),
-		"class"  CHARACTER VARYING(6)
+CREATE TABLE "${schemaName}"."foranmald" (
+		"did"  INTEGER                NOT NULL,
+		"name" CHARACTER VARYING(256) NOT NULL
 )
 WITH (OIDS = FALSE
 );
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."anmalning"
-		ADD CONSTRAINT "ixpk_anmalning" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."foranmald"
+		ADD CONSTRAINT "ixpk_foranmald" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."anmalning"
-		ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
-
-ALTER TABLE "${schemaName}"."anmalning"
-		ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
-
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."anmalning" TO "${roleName}";
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."foranmald" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
 -- Table Registration list

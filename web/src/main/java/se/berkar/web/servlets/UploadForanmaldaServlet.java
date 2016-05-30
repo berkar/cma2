@@ -15,25 +15,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import se.berkar.model.Anmalning;
+import se.berkar.model.Foranmald;
 import se.berkar.qualifiers.CmaLogger;
-import se.berkar.services.AnmalningServiceBean;
+import se.berkar.services.ForanmaldServiceBean;
 
 import org.jboss.logging.Logger;
 
-@WebServlet(name = "UploadAnmalningarServlet", urlPatterns = {"/upload/anmalningar"})
+@WebServlet(name = "UploadAnmalningarServlet", urlPatterns = {"/upload/foranmalda"})
 @MultipartConfig
-public class UploadAnmalningarServlet extends HttpServlet {
+public class UploadForanmaldaServlet extends HttpServlet {
 
 	@Inject
 	@CmaLogger
 	private transient Logger itsLog;
 
 	@Inject
-	private AnmalningServiceBean itsAnmalningService;
+	private ForanmaldServiceBean itsAnmalningService;
 
 	@Inject
-	private AnmalningReader itsReader;
+	private ForanmaldReader itsReader;
 
 	@Override
 	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp)
@@ -52,15 +52,16 @@ public class UploadAnmalningarServlet extends HttpServlet {
 	 */
 	protected void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		final Part filePart = request.getPart("anmalningar");
+		final Part filePart = request.getPart("foranmalda");
 		if (filePart != null) {
 			final String fileName = getFileName(filePart);
 			InputStream filecontent = null;
 			try {
 				filecontent = filePart.getInputStream();
-				itsLog.error("Fil " + fileName + " laddas upp");
-				List<Anmalning> importSubject = itsReader.fromStream(filecontent);
+				itsLog.info("Fil " + fileName + " laddas upp");
+				List<Foranmald> importSubject = itsReader.fromStream(filecontent);
 				itsAnmalningService.upload(importSubject);
+				itsLog.info("Fil " + fileName + " uppladdad OK!");
 			} catch (final IllegalFormatException | IOException exception) {
 				itsLog.error("Problems during file upload.", exception);
 			} finally {

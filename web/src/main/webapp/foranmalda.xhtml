@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:outputLabel value="Föranmalda"/>
+    <h:form>
+        <h:dataTable id="foranmaldaTable" styleClass="bordered" value="#{foranmaldBean.foranmalda}" var="foranmald">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText style="font-weight: bold;" value="Namn"/>
+                </f:facet>
+                #{foranmald.name}
+            </h:column>
+        </h:dataTable>
+    </h:form>
+</f:view>
+</html>

@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import se.berkar.services.AnmalningServiceBean;
+import se.berkar.services.ForanmaldServiceBean;
 import se.berkar.services.StartServiceBean;
 import se.berkar.web.model.Option;
 
@@ -19,17 +19,17 @@ import se.berkar.web.model.Option;
 public class SelectBean {
 
 	@Inject
-	private AnmalningServiceBean itsAnmalningService;
+	private ForanmaldServiceBean itsForanmaldService;
 
 	@Inject
 	private StartServiceBean itsStartService;
 
 	@GET
-	@Path("/anmalningar")
+	@Path("/foranmalda")
 	@Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<Option> getAnmalningar() throws Exception {
-		return itsAnmalningService.getNative(null, null, null).stream().map(theAnmalan -> new Option(theAnmalan.getDid(), theAnmalan.getName())).collect(Collectors.toList());
+		return itsForanmaldService.getNative(null).stream().map(theAnmalan -> new Option(theAnmalan.getDid(), theAnmalan.getName())).collect(Collectors.toList());
 	}
 
 	@GET
