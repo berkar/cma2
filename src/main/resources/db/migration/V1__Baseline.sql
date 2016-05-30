@@ -10,6 +10,32 @@ CACHE 1;
 GRANT SELECT, UPDATE ON SEQUENCE "${schemaName}"."sq_cma" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
+-- Table Egenskaper
+--------------------------------------------------------------------------------------------------
+
+CREATE TABLE "${schemaName}"."egenskaper" (
+		"did"                        INTEGER NOT NULL,
+		"starttid"                   CHARACTER VARYING(8),
+		"antal_per_grupp"            INTEGER,
+		"forsta_startnummer"         INTEGER,
+		"tid_mellan_grupper_minuter" INTEGER,
+		"antal_varv"                 INTEGER
+)
+WITH (OIDS = FALSE
+);
+
+-- Add keys
+
+ALTER TABLE "${schemaName}"."egenskaper"
+		ADD CONSTRAINT "ixpk_egenskaper" PRIMARY KEY ("did");
+
+-- Add data
+
+INSERT INTO "${schemaName}"."egenskaper" (
+		did, starttid, antal_per_grupp, forsta_startnummer, tid_mellan_grupper_minuter, antal_varv
+) VALUES (1, '13:00:00', 20, 100, 10, 3);
+
+--------------------------------------------------------------------------------------------------
 -- Table Gender
 --------------------------------------------------------------------------------------------------
 
@@ -22,7 +48,8 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."gender" ADD CONSTRAINT "ixpk_gender" PRIMARY KEY ("key");
+ALTER TABLE "${schemaName}"."gender"
+		ADD CONSTRAINT "ixpk_gender" PRIMARY KEY ("key");
 
 -- Add data
 
@@ -51,7 +78,8 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."class" ADD CONSTRAINT "ixpk_class" PRIMARY KEY ("key");
+ALTER TABLE "${schemaName}"."class"
+		ADD CONSTRAINT "ixpk_class" PRIMARY KEY ("key");
 
 -- Add data
 INSERT INTO "${schemaName}"."class" (
@@ -79,11 +107,14 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "ixpk_anmalning" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."anmalning"
+		ADD CONSTRAINT "ixpk_anmalning" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
+ALTER TABLE "${schemaName}"."anmalning"
+		ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
 
-ALTER TABLE "${schemaName}"."anmalning" ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
+ALTER TABLE "${schemaName}"."anmalning"
+		ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
 
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."anmalning" TO "${roleName}";
 
@@ -106,13 +137,17 @@ WITH (OIDS = FALSE
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "ixpk_start" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."start"
+		ADD CONSTRAINT "ixpk_start" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "ixak_start" UNIQUE ("start_number");
+ALTER TABLE "${schemaName}"."start"
+		ADD CONSTRAINT "ixak_start" UNIQUE ("start_number");
 
-ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
+ALTER TABLE "${schemaName}"."start"
+		ADD CONSTRAINT "r_gender" FOREIGN KEY ("gender") REFERENCES "${schemaName}"."gender" ("key");
 
-ALTER TABLE "${schemaName}"."start" ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
+ALTER TABLE "${schemaName}"."start"
+		ADD CONSTRAINT "r_class" FOREIGN KEY ("class") REFERENCES "${schemaName}"."class" ("key");
 
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."start" TO "${roleName}";
 
@@ -123,18 +158,21 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."start" TO "${role
 CREATE TABLE "${schemaName}"."resultat" (
 		"did"          INTEGER NOT NULL,
 		"start_number" INTEGER NOT NULL,
-		"finish_time"  FLOAT8 NOT NULL
+		"finish_time"  FLOAT8  NOT NULL
 )
 WITH (OIDS = FALSE
 );
 
 -- Add keys
 
-ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
+ALTER TABLE "${schemaName}"."resultat"
+		ADD CONSTRAINT "ixpk_order_list" PRIMARY KEY ("did");
 
-ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
+ALTER TABLE "${schemaName}"."resultat"
+		ADD CONSTRAINT "ixak_order_list" UNIQUE ("start_number");
 
-ALTER TABLE "${schemaName}"."resultat" ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."start" ("start_number");
+ALTER TABLE "${schemaName}"."resultat"
+		ADD CONSTRAINT "r_order" FOREIGN KEY ("start_number") REFERENCES "${schemaName}"."start" ("start_number");
 
 --------------------------------------------------------------------------------------------------
 -- View Result list
