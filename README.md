@@ -12,3 +12,5 @@
 - Skapa starttider
 - Redigering startlista
 - Skriv ut resultatlista map. Herr/Dam (Klass?) (HTML/PDF?)
+
+#### Testar
