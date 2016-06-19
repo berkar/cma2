@@ -93,6 +93,14 @@ public class StartServiceBean {
 		}
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Start getByStartnummer(Integer theStartnummer) throws Exception {
+		return itsEntityManager
+				.createQuery("SELECT s FROM Start s WHERE s.startnumber=:startnumber", Start.class)
+				.setParameter("startnumber", theStartnummer)
+				.getSingleResult();
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

@@ -15,14 +15,27 @@ public class Resultat {
 
 	private Integer itsDid;
 	private Integer itsStartnumber;
-	private Double itsFinishtime;
+	private Integer itsPlaceringTotal;
+	private Integer itsPlaceringClazz;
+	private Integer itsPlaceringGender;
+	private Integer itsFinishOrder;
+	private Integer itsFinishtime;
+	private Integer itsTotaltime;
+	private String itsMedalj;
+	private Boolean itsDidNotStart;
+	private Boolean itsDidNotFinish;
 
 	public Resultat() {
 	}
 
-	public Resultat(Integer theStartnumber, Double theFinishtime) {
+	public Resultat(Integer theStartnumber) {
+		itsStartnumber = theStartnumber;
+	}
+
+	public Resultat(Integer theStartnumber, Integer theFinishtime, Integer theFinishOrder) {
 		itsStartnumber = theStartnumber;
 		itsFinishtime = theFinishtime;
+		itsFinishOrder = theFinishOrder;
 	}
 
 	@Id
@@ -45,13 +58,85 @@ public class Resultat {
 		itsStartnumber = theStartnumber;
 	}
 
+	@Column(name = "PLACERING_TOTAL")
+	public Integer getPlaceringTotal() {
+		return itsPlaceringTotal;
+	}
+
+	public void setPlaceringTotal(Integer thePlaceringTotal) {
+		itsPlaceringTotal = thePlaceringTotal;
+	}
+
+	@Column(name = "PLACERING_CLASS")
+	public Integer getPlaceringClazz() {
+		return itsPlaceringClazz;
+	}
+
+	public void setPlaceringClazz(Integer thePlaceringClazz) {
+		itsPlaceringClazz = thePlaceringClazz;
+	}
+
+	@Column(name = "PLACERING_GENDER")
+	public Integer getPlaceringGender() {
+		return itsPlaceringGender;
+	}
+
+	public void setPlaceringGender(Integer thePlaceringGender) {
+		itsPlaceringGender = thePlaceringGender;
+	}
+
+	@Column(name = "FINISH_ORDER")
+	public Integer getFinishOrder() {
+		return itsFinishOrder;
+	}
+
+	public void setFinishOrder(Integer theFinishOrder) {
+		itsFinishOrder = theFinishOrder;
+	}
+
 	@Column(name = "FINISH_TIME")
-	public Double getFinishtime() {
+	public Integer getFinishtime() {
 		return itsFinishtime;
 	}
 
-	public void setFinishtime(Double theFinishtime) {
+	public void setFinishtime(Integer theFinishtime) {
 		itsFinishtime = theFinishtime;
+	}
+
+	@Column(name = "TOTAL_TIME")
+	public Integer getTotaltime() {
+		return itsTotaltime;
+	}
+
+	public void setTotaltime(Integer theTotaltime) {
+		itsTotaltime = theTotaltime;
+	}
+
+	@Column(name = "MEDALJ")
+	public String getMedalj() {
+		return itsMedalj;
+	}
+
+	public void setMedalj(String theMedalj) {
+		itsMedalj = theMedalj;
+	}
+
+	@Column(name = "did_not_start")
+	public Boolean getDidNotStart() {
+		return itsDidNotStart;
+	}
+
+	public void setDidNotStart(Boolean theDidNotStart) {
+		itsDidNotStart = theDidNotStart;
+	}
+
+	@Column(name = "did_not_finish")
+	public Boolean getDidNotFinish() {
+		return itsDidNotFinish;
+	}
+
+	public void setDidNotFinish(Boolean theDidNotFinish) {
+		itsDidNotFinish = theDidNotFinish;
 	}
 }
 

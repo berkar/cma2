@@ -12,7 +12,7 @@ public class Clazz {
 	private String itsKey;
 	private String itsNamn;
 	private Integer itsStartnumber;
-	private String itsStarttime;
+	private Integer itsStarttime;
 
 	@Id
 	@Column(name = "key")
@@ -43,11 +43,11 @@ public class Clazz {
 	}
 
 	@Column(name = "start_time")
-	public String getStarttime() {
+	public Integer getStarttime() {
 		return itsStarttime;
 	}
 
-	public void setStarttime(String theStarttime) {
+	public void setStarttime(Integer theStarttime) {
 		itsStarttime = theStarttime;
 	}
 }

@@ -71,7 +71,7 @@ CREATE TABLE "${schemaName}"."class" (
 		"key"          CHARACTER VARYING(6)   NOT NULL,
 		"namn"         CHARACTER VARYING(100) NOT NULL,
 		"start_number" INTEGER,
-		"start_time"   CHARACTER VARYING(5)
+		"start_time"   INTEGER
 )
 WITH (OIDS = FALSE
 );
@@ -84,11 +84,11 @@ ALTER TABLE "${schemaName}"."class"
 -- Add data
 INSERT INTO "${schemaName}"."class" (
 		key, namn, start_number, start_time
-) VALUES ('elit', 'Elit', 100, '10:00');
+) VALUES ('elit', 'Elit', 100, 0);
 
 INSERT INTO "${schemaName}"."class" (
 		key, namn, start_number, start_time
-) VALUES ('motion', 'Motion', 200, '12:00');
+) VALUES ('motion', 'Motion', 200, 300);
 
 GRANT SELECT ON TABLE "${schemaName}"."class" TO "${roleName}";
 
@@ -115,14 +115,12 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."foranmald" TO "${
 --------------------------------------------------------------------------------------------------
 
 CREATE TABLE "${schemaName}"."start" (
-		"did"            INTEGER                NOT NULL,
-		"name"           CHARACTER VARYING(256) NOT NULL,
-		"gender"         CHARACTER VARYING(6)   NOT NULL,
-		"class"          CHARACTER VARYING(6)   NOT NULL,
-		"start_number"   INTEGER                NOT NULL,
-		"start_time"     TIMESTAMP,
-		"did_not_start"  BOOLEAN,
-		"did_not_finish" BOOLEAN
+		"did"          INTEGER                NOT NULL,
+		"name"         CHARACTER VARYING(256) NOT NULL,
+		"gender"       CHARACTER VARYING(6)   NOT NULL,
+		"class"        CHARACTER VARYING(6)   NOT NULL,
+		"start_number" INTEGER                NOT NULL,
+		"start_time"   INTEGER                NOT NULL
 )
 WITH (OIDS = FALSE
 );
@@ -144,13 +142,21 @@ ALTER TABLE "${schemaName}"."start"
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE "${schemaName}"."start" TO "${roleName}";
 
 --------------------------------------------------------------------------------------------------
--- Table Resultat (the order in which the startnumber finishes)
+-- Table Resultat
 --------------------------------------------------------------------------------------------------
 
 CREATE TABLE "${schemaName}"."resultat" (
-		"did"          INTEGER NOT NULL,
-		"start_number" INTEGER NOT NULL,
-		"finish_time"  FLOAT8  NOT NULL
+		"did"              INTEGER NOT NULL,
+		"start_number"     INTEGER NOT NULL,
+		"placering_total"  INTEGER,
+		"placering_class"  INTEGER,
+		"placering_gender" INTEGER,
+		"finish_order"     INTEGER NOT NULL,
+		"finish_time"      INTEGER  NOT NULL,
+		"total_time"       INTEGER,
+		"medalj"           CHARACTER VARYING(6),
+		"did_not_start"    BOOLEAN,
+		"did_not_finish"   BOOLEAN
 )
 WITH (OIDS = FALSE
 );
@@ -172,9 +178,12 @@ ALTER TABLE "${schemaName}"."resultat"
 
 CREATE VIEW resultatlista_gv AS
 		SELECT
-				start.*,
-				resultat.did AS finish_order,
-				resultat.finish_time
-		FROM "${schemaName}".start, "${schemaName}".resultat
-		WHERE start.start_number = resultat.start_number AND resultat.finish_time IS NOT NULL
-		ORDER BY resultat.finish_time DESC;
+				start.name,
+				start.class,
+				start.gender,
+				resultat.*
+		FROM "${schemaName}".start
+				FULL JOIN "${schemaName}".resultat
+						ON "${schemaName}".start.start_number = "${schemaName}".resultat.start_number
+		WHERE resultat.did_not_start OR resultat.did_not_finish OR resultat.finish_time IS NOT NULL
+		ORDER BY resultat.placering_total DESC;

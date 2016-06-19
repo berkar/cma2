@@ -58,7 +58,7 @@ public class UploadResultatServlet extends HttpServlet {
 			InputStream filecontent = null;
 			try {
 				filecontent = filePart.getInputStream();
-				itsLog.error("Fil " + fileName + " laddas upp");
+				itsLog.info("Fil " + fileName + " laddas upp");
 				List<Resultat> importSubject = itsReader.fromStream(filecontent);
 				itsResultatService.upload(importSubject);
 			} catch (final IllegalFormatException | IOException exception) {

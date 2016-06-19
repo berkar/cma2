@@ -4,10 +4,11 @@ INSERT INTO "${schemaName}".start (
 		"name",
 		"gender",
 		"class",
-		"start_number"
+		"start_number",
+		"start_time"
 )
 VALUES (
-		1, 'Marcus Hellner', 'herrar', 'elit', 1
+		1, 'Marcus Hellner', 'herrar', 'elit', 1, 0
 );
 
 INSERT INTO "${schemaName}".start (
@@ -15,8 +16,9 @@ INSERT INTO "${schemaName}".start (
 		"name",
 		"gender",
 		"class",
-		"start_number"
+		"start_number",
+		"start_time"
 )
 VALUES (
-		2, 'Stina Nilsson', 'damer', 'elit', 2
+		2, 'Stina Nilsson', 'damer', 'elit', 2, 0
 );
