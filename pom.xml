@@ -235,6 +235,15 @@
 	</build>
 	<profiles>
 		<profile>
+			<id>windows</id>
+			<properties>
+				<flyway.server>192.168.99.100</flyway.server>
+				<wildfly.hostname>192.168.99.100</wildfly.hostname>
+				<wildfly.username>berkar</wildfly.username>
+				<wildfly.password>berkar</wildfly.password>
+			</properties>
+		</profile>
+		<profile>
 			<id>deploy-datasource</id>
 			<build>
 				<plugins>
