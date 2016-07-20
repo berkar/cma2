@@ -28,6 +28,7 @@ import org.jboss.logging.Logger;
 public class EgenskaperServiceBean {
 
 	public static final int EGENSKAPS_DID = 1;
+
 	@Inject
 	@CmaLogger
 	private transient Logger itsLog;
