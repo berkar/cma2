@@ -51,7 +51,6 @@ public class UploadForanmaldaServlet extends HttpServlet {
 	 * @throws IOException .
 	 */
 	protected void processRequest(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
 		final Part filePart = request.getPart("foranmalda");
 		if (filePart != null) {
 			final String fileName = getFileName(filePart);
@@ -62,6 +61,7 @@ public class UploadForanmaldaServlet extends HttpServlet {
 				List<Foranmald> importSubject = itsReader.fromStream(filecontent);
 				itsAnmalningService.upload(importSubject);
 				itsLog.info("Fil " + fileName + " uppladdad OK!");
+				response.sendRedirect(request.getContextPath() + "/foranmalda.html");
 			} catch (final IllegalFormatException | IOException exception) {
 				itsLog.error("Problems during file upload.", exception);
 			} finally {
