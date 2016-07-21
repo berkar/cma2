@@ -12,7 +12,7 @@
     var xmlhttp = new XMLHttpRequest();
     var url = "/cma/rest/foranmald";
 
-    xmlhttp.onreadystatechange=function() {
+    xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             myFunction(xmlhttp.responseText);
         }
@@ -24,11 +24,8 @@
         var arr = JSON.parse(response);
         var i;
         var out = "<table>";
-
-        for(i = 0; i < arr.length; i++) {
-            out += "<tr><td>" +
-                    arr[i].name +
-                    "</td></tr>";
+        for (i = 0; i < arr.length; i++) {
+            out += "<tr><td>" + arr[i].name + "</td></tr>";
         }
         out += "</table>";
         document.getElementById("id01").innerHTML = out;
