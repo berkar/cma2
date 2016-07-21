@@ -18,8 +18,8 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class ForanmaldReader {
 	private final static Integer SHEET = 0;
-	private final static Integer ROW_POS = 1;
-	private final static Integer COLUMN_POS = 1;
+	private final static Integer ROW_POS = 0;
+	private final static Integer COLUMN_POS = 0;
 
 	public List<Foranmald> fromStream(final InputStream inputStream) throws IllegalFormatException {
 		final List<Foranmald> results = new ArrayList<>();
@@ -33,7 +33,7 @@ public class ForanmaldReader {
 				String aFirstname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS), rowIndex);
 				String aLastname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS + 1), rowIndex);
 				if (EmptyHandler.isNotEmpty(aFirstname)) {
-					results.add(new Foranmald(aFirstname + " " + aLastname));
+					results.add(new Foranmald(aFirstname + (EmptyHandler.isNotEmpty(aLastname) ? (" " + aLastname): "")));
 				}
 			}
 		} catch (InvalidFormatException | IOException e) {
