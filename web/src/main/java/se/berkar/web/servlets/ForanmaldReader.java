@@ -5,14 +5,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.*;
 import se.berkar.common.helpers.EmptyHandler;
 import se.berkar.model.Foranmald;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
@@ -29,14 +26,20 @@ public class ForanmaldReader {
 //				throw new IllegalArgumentException("Felaktigt antal arbetsblad!");
 //			}
 			Sheet sheet = workbook.getSheetAt(SHEET);
-			for (int rowIndex = ROW_POS; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-				String aFirstname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS), rowIndex);
-				String aLastname = parseStringValue(sheet.getRow(rowIndex).getCell(COLUMN_POS + 1), rowIndex);
-				if (EmptyHandler.isNotEmpty(aFirstname)) {
-					results.add(new Foranmald(aFirstname + (EmptyHandler.isNotEmpty(aLastname) ? (" " + aLastname): "")));
+			for (int rowIndex = ROW_POS; rowIndex < sheet.getLastRowNum(); rowIndex++) {
+				Row row = sheet.getRow(rowIndex);
+				if (row != null) {
+					String aFirstname = parseStringValue(row.getCell(COLUMN_POS), rowIndex);
+					String aLastname = parseStringValue(row.getCell(COLUMN_POS + 1), rowIndex);
+					if (EmptyHandler.isNotEmpty(aFirstname)) {
+                        results.add(new Foranmald(aFirstname + (EmptyHandler.isNotEmpty(aLastname) ? (" " + aLastname): "")));
+                    }
+				}else {
+					// Finishing the import due to empty row!
+					break;
 				}
 			}
-		} catch (InvalidFormatException | IOException e) {
+		} catch (Exception e) {
 			throw new IllegalFormatException(e);
 		}
 		return results;
